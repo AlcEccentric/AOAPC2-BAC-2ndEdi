@@ -2,8 +2,6 @@
 #include <fstream>
 int MAXN = 3005;
 using namespace std;
-ofstream fout("test.out");
-ifstream fin("test.in");
 void init(int *mods){
     for(int i = 0; i < MAXN; i++)
         mods[i] = -1;
@@ -14,15 +12,15 @@ int main(){
     // init mods with minus one
     init(mods);
     int x, y;
-    while(fin>>x>>y){
-        fout<<x<<y<<endl;
+    while(cin>>x>>y){
+        
         int tempx = x;
         bool getSame = false;
         int beginInd = -1, endInd = -1;
         for(int i = 0; i < y+1; i++){
             res[i] = tempx/y;
             mods[i] = tempx%y;
-            // find same mod
+            // cind same mod
             for(int j = i - 1; j > i - y - 1; j--){
                 if(j < 0)
                     break;
@@ -38,20 +36,29 @@ int main(){
             tempx = mods[i] * 10;
         }
 
-        fout << x << "/" << y << " = ";
+        cout << x << "/" << y << " = ";
         for(int i = 0; i <= endInd; i++){
+            if(i == 51) {
+                cout<<"...)"<<endl;
+                break;
+            }
             if(i == 0)
-                fout<<res[i]<<".";
-            if(i == beginInd)
-                fout<<"("<<res[i];
+                cout<<res[i]<<".";
+            if(i == beginInd){
+                cout<<"("<<res[i];
+            }
             if(i == endInd){
                 if(endInd != beginInd)
-                    fout<<res[i]<<")"<<endl;
+                    cout<<res[i]<<")"<<endl;
                 else
-                    fout<<")"<<endl;
+                    cout<<")"<<endl;
             }
+            if(i != 0 && i != beginInd && i != endInd){
+                cout<<res[i];
+            }
+            
         }
-        fout << "   " << endInd - beginInd + 1 << " = number of digits in repeating cycle\n";
+        cout << "   " << endInd - beginInd + 1 << " = number of digits in repeating cycle\n\n";
     }   
     return 0;
 }
