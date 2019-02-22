@@ -4,6 +4,7 @@
 using namespace std;
 // ifstream cin("test.in");
 // ofstream cout("test.out");
+// need to find other's better solution
 struct face{
     int wh[2];
     bool paired;
