@@ -3,8 +3,14 @@
 #include <cstring>
 #include <stdlib.h>
 using namespace std;
-ifstream fin("test.in");
-ofstream fout("test.out");
+// ifstream cin("test.in");
+// ofstream cout("test.out");
+// 一直WA的原因是initCounter数组中没有对counter[8]进行初始化
+// 而输出的结果是从counter[1]到counter[8]
+// 两个启发：
+// 一、如果可以不让含数据的数组元素下标从1开始就尽可能让其从0开始，比如这道题边长为1的正方形数量可以就放在counter[0]里
+// 二、数组可以尽可能开的大一点，初始化函数的循环次数和数组的长度保持一致
+// 三、如果让含数据的数组元素下标从1开始，则应该好好检查代码中所有关于该数组的代码，看是否有Access越界等访问未初始化的数据的行为
 
 enum {UP, DOWN, LEFT, RIGHT};
 struct dot{
@@ -12,32 +18,32 @@ struct dot{
     int udlrLen[4];
 };
 
-void initDot(dot dots[9][9]){
-    for(int i = 0; i < 9; i++)
-        for(int j = 0; j < 9; j++)
+void initDot(dot dots[15][15]){
+    for(int i = 0; i < 15; i++)
+        for(int j = 0; j < 15; j++)
             for(int k = 0; k < 4; k++){
                 dots[i][j].udlrHas[k] = false;
                 dots[i][j].udlrLen[k] = 0;
             }
 }
 void initCounter(int * counter){
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < 15; i++)
         counter[i] = 0;
 }
 
-void getEdge(dot dots[9][9], int m){
+void getEdge(dot dots[15][15], int m){
     for(int i = 0; i < m; i++){
         char hv;
-        fin>>hv;
+        cin>>hv;
         int hn, vn;
         if(hv == 'H'){
-            fin>>hn>>vn;
+            cin>>hn>>vn;
             hn--; vn--;
             dots[hn][vn].udlrHas[RIGHT] = true;
             dots[hn][vn+1].udlrHas[LEFT] = true;
 
         }else{
-            fin>>vn>>hn;
+            cin>>vn>>hn;
             hn--; vn--;
             dots[hn][vn].udlrHas[DOWN] = true;
             dots[hn+1][vn].udlrHas[UP] = true;
@@ -46,7 +52,7 @@ void getEdge(dot dots[9][9], int m){
     }
 }
 
-int countRight(dot dots[9][9], int h, int v, int n){
+int countRight(dot dots[15][15], int h, int v, int n){
     if(dots[h][v].udlrHas[RIGHT]){
         if(dots[h][v+1].udlrLen[RIGHT])
             return 1+dots[h][v+1].udlrLen[RIGHT];
@@ -56,7 +62,7 @@ int countRight(dot dots[9][9], int h, int v, int n){
     else
         return 0;
 }   
-int countLeft(dot dots[9][9], int h, int v, int n){
+int countLeft(dot dots[15][15], int h, int v, int n){
     if(dots[h][v].udlrHas[LEFT]){
         if(dots[h][v-1].udlrLen[LEFT])
             return 1+dots[h][v-1].udlrLen[LEFT];
@@ -66,7 +72,7 @@ int countLeft(dot dots[9][9], int h, int v, int n){
     else
         return 0;
 } 
-int countUp(dot dots[9][9], int h, int v, int n){
+int countUp(dot dots[15][15], int h, int v, int n){
     if(dots[h][v].udlrHas[UP]){
         if(dots[h-1][v].udlrLen[UP])
             return 1+dots[h-1][v].udlrLen[UP];
@@ -76,7 +82,7 @@ int countUp(dot dots[9][9], int h, int v, int n){
     else
         return 0;
 } 
-int countDown(dot dots[9][9], int h, int v, int n){
+int countDown(dot dots[15][15], int h, int v, int n){
     if(dots[h][v].udlrHas[DOWN]){
         if(dots[h+1][v].udlrLen[DOWN])
             return 1+dots[h+1][v].udlrLen[DOWN];
@@ -87,7 +93,7 @@ int countDown(dot dots[9][9], int h, int v, int n){
         return 0;
 } 
 
-void countEdgeLen(dot dots[9][9], int n){
+void countEdgeLen(dot dots[15][15], int n){
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
             dots[i][j].udlrLen[RIGHT] = countRight(dots, i, j, n);
@@ -96,9 +102,18 @@ void countEdgeLen(dot dots[9][9], int n){
             dots[i][j].udlrLen[DOWN] = countDown(dots, i, j, n);
         }
     }
+
+    // for(int i = 0; i < n; i++){
+    //     for(int j = 0; j < n; j++){
+    //         cout<<"dot("<<i+1<<","<<j+1<<"):\n"<<"up:"<< dots[i][j].udlrLen[UP]<<endl;
+    //         cout<<"down:"<< dots[i][j].udlrLen[DOWN]<<endl;
+    //         cout<<"left:"<< dots[i][j].udlrLen[LEFT]<<endl;
+    //         cout<<"right:"<< dots[i][j].udlrLen[RIGHT]<<endl<<endl;
+    //     }
+    // }
 }
 
-void analyzeDots(int*counter, dot dots[9][9], int n){
+void analyzeDots(int*counter, dot dots[15][15], int n){
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
@@ -118,32 +133,32 @@ void analyzeDots(int*counter, dot dots[9][9], int n){
 int main(){
     int n,m;
     int proNo = 0;
-    while(fin>>n){
-        fin>>m;
-        dot dots[9][9];
+    while(cin>>n){
+        cin>>m;
+        dot dots[15][15];
         initDot(dots);
         getEdge(dots, m);
         countEdgeLen(dots, n);
-        int counter[9];//counter[0] is useless
+        int counter[15];//counter[0] is useless
         initCounter(counter);
         analyzeDots(counter, dots, n);
         if(proNo != 0){
-            fout<<endl;
-            fout<<"**********************************";
-            fout<<endl;
+            cout<<endl;
+            cout<<"**********************************\n";
+            cout<<endl;
         }
-        fout<<"Problem #"<<proNo+1<<"\n\n";
+        cout<<"Problem #"<<proNo+1<<"\n\n";
         bool hassquare = false;
         for(int i = 1; i <= n-1; i++)
         {
             if(counter[i]){
-                fout<<counter[i]<<" square (s) of size "<<i<<endl;
+                cout<<counter[i]<<" square (s) of size "<<i<<endl;
                 hassquare = hassquare || true;
             }
             
         }
         if (!hassquare) {
-            fout<<"No completed squares can be found."<<endl;
+            cout<<"No completed squares can be found."<<endl;
         }
         proNo++;
     }
