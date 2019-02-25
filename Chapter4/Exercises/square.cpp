@@ -5,6 +5,7 @@
 using namespace std;
 // ifstream cin("test.in");
 // ofstream cout("test.out");
+// note:
 // 一直WA的原因是initCounter数组中没有对counter[8]进行初始化
 // 而输出的结果是从counter[1]到counter[8]
 // 两个启发：
