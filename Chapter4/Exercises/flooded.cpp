@@ -7,7 +7,20 @@
 using namespace std;
 // ifstream cin("test.in");
 // ofstream cout("test.out");
-
+// 注意一些边界值情况，以这道题为例，边界情况有
+// 1. 只有一个square
+// 2. 只有一列/行square
+// 3. 水完全淹没了所有square
+// 4. 没有水
+// 5. 水量导致的高度恰好与某个square高度一样
+// 6. 水量导致的高度恰好与最高square高度一样
+// 7. 有square的海拔高度为负数
+// 8. 所有square的海拔高度为负数
+// 9. 所有Square的海拔为0
+// 在这道题中，由于没考虑情况1导致了一个bug
+// 53行的外循环中计算的sum值是水恰好到达squares[i]的高度但是还没有淹没squares[i]时的水量
+// 带bug版本的i是从1开始的，即已经默认squares[1]的存在，然而在情况1中，squares[1]并不存在，从而导致了循环变量大于边界值
+// 访问了含有未知数据的squares[1]，使得最后的计算的结果错误 
 int mycmp(const void* x, const void* y){
     return *(int*)x - *(int*)y;
 }
