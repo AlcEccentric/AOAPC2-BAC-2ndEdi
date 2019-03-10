@@ -21,7 +21,7 @@ using namespace std;
 // 53行的外循环中计算的sum值是水恰好到达squares[i]的高度但是还没有淹没squares[i]时的水量
 // 带bug版本的i是从1开始的，即已经默认squares[1]的存在，然而在情况1中，squares[1]并不存在，从而导致了循环变量大于边界值
 // 访问了含有未知数据的squares[1]，使得最后的计算的结果错误 
-int mycmp(const void* x, const void* y){
+int mycmp(const void* x, const void* y){ß
     return *(int*)x - *(int*)y;
 }
 int main(){
