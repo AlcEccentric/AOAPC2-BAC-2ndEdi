@@ -51,6 +51,7 @@
         "utility": "cpp",
         "stack": "cpp",
         "map": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "set": "cpp"
     }
 }
