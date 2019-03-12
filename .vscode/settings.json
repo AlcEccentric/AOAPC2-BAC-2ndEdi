@@ -52,6 +52,7 @@
         "stack": "cpp",
         "map": "cpp",
         "array": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "vector": "cpp"
     }
 }
