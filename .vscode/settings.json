@@ -53,6 +53,7 @@
         "map": "cpp",
         "array": "cpp",
         "set": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "queue": "cpp"
     }
 }
