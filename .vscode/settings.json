@@ -54,6 +54,7 @@
         "array": "cpp",
         "set": "cpp",
         "vector": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "iomanip": "cpp"
     }
 }
