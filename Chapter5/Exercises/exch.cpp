@@ -6,8 +6,8 @@
 #include <set>
 #include <vector>
 using namespace std;
-ifstream fin("test.in");
-ofstream fout("test.out");
+// ifstream  cin("test.in");
+// ofstream  cout("test.out");
 
 struct stu{
     unsigned int from;
@@ -16,14 +16,14 @@ struct stu{
 
 int main(){
     int n;
-    while(fin>>n){
+    while( cin>>n){
         if(!n) break;
         map<pair<unsigned int, unsigned int>, unsigned int > mymap;
         set<pair<unsigned int, unsigned int> > info;
         for(int i = 0; i < n; i++)
         {
             unsigned int from, to;
-            fin >> from >> to;
+             cin >> from >> to;
             if(mymap.count(make_pair(from, to))) mymap[make_pair(from, to)] ++;
             else mymap[make_pair(from, to)] = 1;
             
@@ -37,7 +37,7 @@ int main(){
             }
                 
         }
-        if(allFoundPair) fout << "YES" << endl;
-        else fout << "NO" << endl;
+        if(allFoundPair)  cout << "YES" << endl;
+        else  cout << "NO" << endl;
     }
 }
