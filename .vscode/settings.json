@@ -55,6 +55,7 @@
         "set": "cpp",
         "vector": "cpp",
         "queue": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "__tree": "cpp"
     }
 }
