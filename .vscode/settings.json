@@ -57,6 +57,7 @@
         "queue": "cpp",
         "iomanip": "cpp",
         "__tree": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "deque": "cpp"
     }
 }
