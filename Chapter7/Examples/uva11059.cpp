@@ -3,16 +3,16 @@
 #include <cstring>
 #include <stdlib.h>
 using namespace std;
-ifstream fin("test.in");
-ofstream fout("test.out");
+// ifstream cin("test.in");
+// ofstream cout("test.out");
 long long nums[20];
 int main(){
     int n;
     int caseNum = 0;
-    while(fin>>n){
+    while(cin>>n){
         long long maxp = 0;
         for (int i = 0; i < n; i++){
-            fin >> nums[i];
+            cin >> nums[i];
         }
         caseNum++;
         for (int sublen = 1; sublen <= n; sublen++){
@@ -24,7 +24,7 @@ int main(){
                 if(res > maxp) maxp = res; 
             }  
         }
-        fout << "Case #"<< caseNum << ": The maximum product is "<< maxp << ".\n\n";
+        cout << "Case #"<< caseNum << ": The maximum product is "<< maxp << ".\n\n";
         
     }
 }
