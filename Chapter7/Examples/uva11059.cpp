@@ -3,6 +3,7 @@
 #include <cstring>
 #include <stdlib.h>
 using namespace std;
+// uva 11059 commit 注释写错了懒得改了
 // ifstream cin("test.in");
 // ofstream cout("test.out");
 long long nums[20];
