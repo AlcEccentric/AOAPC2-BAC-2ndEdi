@@ -2,40 +2,118 @@
 #include <fstream>
 #include <cstring>
 #include <stdlib.h>
-#include <vector>
+#include <set>
 #define For(i, n) for(i=0; i<n; i++)
 using namespace std;
 ifstream fin("test.in");
 ofstream fout("test.out");
-int testCaseNum, n;
-
+int testCaseNum, m, n, ans;
+bool completeSquare(set<int>& rest, int startX, int startY, int len){
+    
+}
+bool noSquare(set<int>& rest){
+    int len, startX, startY;
+    For(len, n){
+        For(startX, n){
+            For(startY, n){
+                if(completeSquare(rest, startX, startY, len)){
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+bool findAns(set<int>& rest, int restCubeNum, int maxd, int d){
+    int restStepNum = maxd - d;
+    if(restStepNum * 2 < restCubeNum) return false;
+    for(set<int>::iterator ii = rest.begin(); ii != rest.end(); ii++){
+        int takenM = *ii, restSquareNum;
+        rest.erase(takenM);
+        if(noSquare(rest, restSquareNum)){
+            ans = n * n - m - rest.size();
+            return true;
+        }else{
+            if(findAns(rest, restSquareNum, maxd, d + 1)) return true;
+        }
+        rest.insert(takenM);
+    }
+    return false;
+}
 int main(){
     fin >> testCaseNum;
     while(testCaseNum--){
         fin >> n;
         fin.ignore();
-        char line[200];
-        int i, j;
-        For(i, 200) line[i] = '\0';
-        fin.getline(line, 200);
-        char num[3] = "\0\0";
-        i = 0, j = 0;
-        vector<int> nums;
-        while(i != strlen(line)+1){
-            if(line[i] == ' ' || i == strlen(line)){
-                nums.push_back(atoi(num));
-                j = 0;
-                strcpy(num, "\0\0\0");
-                i++;
-            }else{
-                num[j++] = line[i++];
+        int i;
+        ans = 0;
+        set<int> nums, taken;
+        fin >> m;
+        For(i, m){
+            int x;
+            fin >> x;
+            nums.insert(x); 
+        }
+        // 1. 数当前火柴图中，各个边长的正方形数，用于估计函数
+        int row = 2 * n + 1, desNum, totalMNum = n * (n + 1) * 2, cubeNum = n * n;
+        fout << "original square num: " << cubeNum << "\n";
+        for(set<int>::iterator ii = nums.begin(); ii != nums.end(); ii++){
+            desNum = 2;
+            // fout << "take away " << *ii;
+            if(*ii % row <= n){//横着
+                int up = *ii - row, down = *ii + row;
+                int leftD = *ii + n, rightD = *ii + n + 1;
+                int leftU = *ii - n - 1, rightU = *ii - n;
+                if(up <= 0){
+                    desNum--;
+                    if(taken.count(down) || taken.count(leftD) || taken.count(rightD)){
+                        desNum--;
+                    }
+                }else if(down > totalMNum){
+                    desNum--;
+                    if(taken.count(up) || taken.count(leftU) || taken.count(rightU)){
+                        desNum--;
+                    }
+                }else{
+                    if(taken.count(up) || taken.count(leftU) || taken.count(rightU) || taken.count(down) || taken.count(leftD) || taken.count(rightD)){
+                        desNum--;
+                    }
+                }
+            }else{//竖着
+                int left = *ii - 1, right = *ii + 1;
+                int leftD = *ii + n, rightD = *ii + n + 1;
+                int leftU = *ii - n - 1, rightU = *ii - n;
+                if(left <= 0){
+                    desNum--;
+                    if(taken.count(right) || taken.count(rightD) || taken.count(rightU)){
+                        desNum--;
+                    }
+                }else if(right > totalMNum){
+                    desNum--;
+                    if(taken.count(left) || taken.count(leftD) || taken.count(leftU)){
+                        desNum--;
+                    }
+                }else{
+                    if(taken.count(left) || taken.count(leftU) || taken.count(rightU) || taken.count(right) || taken.count(leftD) || taken.count(rightD)){
+                        desNum--;
+                    }
+                }
+            }
+            // fout << " destroy " << desNum << " cubes\n";
+            cubeNum -= desNum;
+            taken.insert(*ii);
+        }    
+        fout << "cube num = " << cubeNum << "\n";
+        // 2. 用迭代加深搜索（深度最多为所有正方形个数和） 
+        int maxn = totalMNum;
+        set<int> rest;
+        For(i, n*n)
+            if(!taken.count(i+1)) rest.insert(i+1);
+        
+        For(i, maxn){
+            if(findAns(rest, cubeNum, i, 0)){
+                break;
             }
         }
-        int size = nums.size();
-        For(i, size){
-            fout << nums[i] << " ";
-        }
-        fout << "\n";
-
     }
 }
